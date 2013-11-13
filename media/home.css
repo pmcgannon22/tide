@@ -1,0 +1,21 @@
+.container {
+	padding-top: 20px;
+}
+
+.msg-box {
+	height: 300px;
+	border: 1px black solid;
+	border-radius: 10px;
+	position: relative;
+}
+
+.msg-input {
+	height: 30px;
+	width: 75%;
+	border: 1px black solid;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+}
+
+
