@@ -2,11 +2,17 @@
 	padding-top: 20px;
 }
 
+.body {
+	background: #00FF99;
+}
+
 .msg-box {
-	height: 300px;
+	height: 570px;
 	border: 1px black solid;
 	border-radius: 10px;
 	position: relative;
+	margin: 10px;
+	background: #FFFFFF;
 }
 
 .msg-input {
@@ -16,6 +22,29 @@
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
+	background: #FFFFFF;
+}
+
+/* same as msg-box above, but might want to change later */
+.tide-box {
+	height: 250px;
+	border: 1px black solid;
+	border-radius: 10px;
+	position: relative;
+	float: right;
+	margin: 10px;
+	background: #FFFFFF;
+}
+
+/* same as msg-box above, but might want to change later */
+.preview-box {
+	height: 300px;
+	border: 1px black solid;
+	border-radius: 10px;
+	position: relative;
+	float: right;
+	margin: 10px;
+	background: #FFFFFF;
 }
 
 
