@@ -16,13 +16,14 @@
 }
 
 .msg-input {
-	height: 30px;
-	width: 75%;
-	border: 1px black solid;
+	width: 100%;
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
-	background: #FFFFFF;
+}
+
+.msg-input input[type=text] {
+	width: 80%;
 }
 
 /* same as msg-box above, but might want to change later */

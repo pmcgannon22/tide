@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
   <head>
-    <title>Bootstrap 101 Template</title>
+    <title>Tide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="media/home.css">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+    <script src="js/main.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,16 +19,31 @@
   </head>
   <body class="body">
   
-	<div class="container">
+	<div ng-controller="ChatCtrl" class="container">
 		<div class="msg-box col-md-6">
-			<div class="msg-input" contenteditable="true">
-				<p>This should be editable.</p>
+			
+			<div class="msg-list">
+				<ul>
+					<li ng-repeat="message in messages"><strong>{{message.user}}: </strong> {{message.text}}</li>
+				</ul>
+			</div>
+			
+			
+			<div class="msg-input">
+				<form ng-submit="sendMessage()">
+					<input type="text" ng-model="messageText" placeholder="Message goes here..." />
+					
+					<input type="submit" value="Send" />
+				</form>
 			</div>
 		</div>
 		
 		<div>
 			<div class="tide-box col-md-5">
-				<p> Here are my other tides. </p>
+				<form ng-submit="setName">
+					<input type="text" ng-model="username" placeholder="Enter your name.">
+					<input type="submit" value="Set" />					
+				</form>
 			</div>
 			
 			<div class="preview-box col-md-5">
