@@ -13,9 +13,9 @@ io.sockets.on('connection', function(socket) {
 	socket.on('postChat', function(data) {
 		console.log('postChat');
 		console.log(data.text);
-		socket.broadcast.to(data.channel).emit('onPostChat', data);
+		socket.broadcast.emit('onPostChat', data);
 	});
-	
+	/*
 	socket.on('subscribe', function(room) {
 		console.log('joining room', room);
 		socket.join(data.room);
@@ -24,7 +24,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('unsubscribe', function(room) {
 		console.log('leaving room', room);
 		socket.leave(data.room);
-	});
+	});*/
 });
 
 
