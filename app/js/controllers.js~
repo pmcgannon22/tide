@@ -28,25 +28,17 @@ tide.controller('ChatCtrl', function($scope) {
 	
 	$scope.active = function(message) {
 		$scope.selected = message;
-        $scope.chatbox = "";
 	}
 });
 
-app.factory('socket', function($rootScope) { });
-
-app.directive('conversation', function(socket) { 
-        var controller = function($scope) {
-            // Incoming
-            socket.on('onPostMessage', function(message) {
-                    // Update if the same titled chat
-                    if(message.name == $scope.message.name) {
-                        $scope.message.text += message.text;
-                    }                                
-                });
-
-            // Outgoing
-            $scope.postMessage = function(note) {
-                socket.emit('postMessage', note);
-            };
-        };
-});
+/*
+function ChatCtrl($scope) {
+	$scope.messages = [];
+	
+	$scope.sendMessage = function() {
+		
+		$scope.messages.push({"text": $scope.messageText, "user": $scope.username});
+		$scope.messageText = "";
+	}
+	
+}*/
