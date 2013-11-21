@@ -71,7 +71,7 @@
         <div class="message-content">
             <div class="message-content-header pure-g">
                 <div class="pure-u-1-2">
-                    <h1 class="message-content-title">Hello from Toronto</h1>
+                    <h1 class="message-content-title">Demo 1.0</h1>
                     <!--
                     <p class="message-content-subtitle">
                         From <a>Tilo Mitra</a> at <span>3:56pm, April 3, 2012</span>
@@ -79,15 +79,16 @@
                 </div>
 
                 <div class="pure-u-1-2 message-content-controls">
-                    <button class="pure-button secondary-button">Reply</button>
-                    <button class="pure-button secondary-button">Forward</button>
-                    <button class="pure-button secondary-button">Move to</button>
+                    <form>
+                    	<input type="text" ng-model="username" placeholder="Enter your username" />
+                    	<input type="text" ng-model="currentChannel" placeholder="Enter a chat channel" />
+                    </form>
                 </div>
             </div>
 
             <div class="message-content-body">
             	
-                <p ng-repeat="chat in chats" ng-class-odd="'left'" ng-class-even="'right'" class="message-bubble triangle-border">
+                <p ng-repeat="chat in chats | filter:filterChannel" ng-class-odd="'left'" ng-class-even="'right'" class="message-bubble triangle-border">
                 	<span class="helvetica chaticon">{{ chat.user | capitalized }}</span>
                     {{ chat.text }}
                     <span class="helvetica message-timestamp">{{ chat.time }}</span>
@@ -95,7 +96,7 @@
                 <div class="clearfix">
                 <form class="pure-form" ng-submit="onPostChat()">
                 	<textarea rows="3" placeholder="Enter message here..." ng-model="chatbox" class="pure-form-aligned chatbox"></textarea>
-                	<button type="submit" class="pure-button">Send</button>
+                	<button type="submit" class="pure-button" ng-disabled="submitDisabled()">Send</button>
                 </form>
             </div>
         </div>

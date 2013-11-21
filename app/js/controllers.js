@@ -73,14 +73,23 @@ tide.controller('ChatCtrl', function($scope, socket) {
 		}
 	];
 	*/
+	$scope.chats = []
 	
-	$scope.chats = [];
+	$scope.filterChannel = function(chat) {
+		return (chat.channel == $scope.currentChannel  && chat.channel != '');
+	};
+	
+	$scope.submitDisabled = function() {
+		return ($scope.chatbox == "" || $scope.chatbox == undefined || $scope.currentChannel == "" || $scope.currentChannel == undefined || $scope.username == "" || $scope.username == undefined);
+	}
+	
 	
 	$scope.onPostChat = function() {
 		console.log('New chat.');
 		var newChat = {
 			text: $scope.chatbox,
-			user: "Pat",
+			user: $scope.username,
+			channel: $scope.currentChannel,
 			time: "2:40am"
 		};
 		$scope.chats.push(newChat);
