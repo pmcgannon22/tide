@@ -1,7 +1,41 @@
 var tide = angular.module('Tide', []);
 
-tide.controller('ChatCtrl', function($scope) {
+tide.filter('capitalized', function() {
+	return function(input, scope) {
+		if(input != null){
+			console.log(input);
+			return input.substring(0,1).toUpperCase();
+		}
+	}
+});
+
+tide.factory('socket', function($rootScope){
+	var socket = io.connect();
+	return {
+		on: function(eventName, callback) {
+			socket.on(eventName, function() {
+				var args = arguments;
+				$rootScope.$apply(function() {
+					callback.apply(socket, args);
+				});
+			});
+		},
+		emit: function(eventName, data, callback) {
+			socket.emit(eventName, data, function() {
+				var args = arguments;
+				$rootScope.$apply(function() {
+					if(callback) {
+						callback.apply(socket, args);
+					}
+				});
+			});
+		}
+	};
+});
+
+tide.controller('ChatCtrl', function($scope, socket) {
 	$scope.selected = null;
+	/*
 	$scope.messages = [
 		{
 			"name" : "Tilo Mitra",
@@ -26,19 +60,40 @@ tide.controller('ChatCtrl', function($scope) {
 		}
 	];
 	
+	$scope.chats = [
+		{
+			"name" : "Pat",
+			"time" : "12:20pm",
+			"text" : "That was an awesome party last night!"
+		},
+		{
+			"name" : "John",
+			"time" : "3:20am",
+			"text" : "I agree. I had the best time :)"
+		}
+	];
+	*/
+	
+	$scope.chats = [];
+	
+	$scope.onPostChat = function() {
+		console.log('New chat.');
+		var newChat = {
+			text: $scope.chatbox,
+			user: "Pat",
+			time: "2:40am"
+		};
+		$scope.chats.push(newChat);
+		$scope.chatbox = "";
+		socket.emit('postChat', newChat);
+	};
+	
+	socket.on('onPostChat', function(data){
+		$scope.chats.push(data);
+	});
+	
+	
 	$scope.active = function(message) {
 		$scope.selected = message;
 	}
 });
-
-/*
-function ChatCtrl($scope) {
-	$scope.messages = [];
-	
-	$scope.sendMessage = function() {
-		
-		$scope.messages.push({"text": $scope.messageText, "user": $scope.username});
-		$scope.messageText = "";
-	}
-	
-}*/
