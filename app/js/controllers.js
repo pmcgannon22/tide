@@ -86,11 +86,14 @@ tide.controller('ChatCtrl', function($scope, socket) {
 	
 	$scope.onPostChat = function() {
 		console.log('New chat.');
+		var d = new Date();
+		var currentTime = d.toLocaleTimeString();
+		currentTime = currentTime.substr(0, 5);
 		var newChat = {
 			text: $scope.chatbox,
 			user: $scope.username,
 			channel: $scope.currentChannel,
-			time: "2:40am"
+			time: currentTime
 		};
 		$scope.chats.push(newChat);
 		$scope.chatbox = "";
