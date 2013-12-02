@@ -43,8 +43,18 @@ io.sockets.on('connection', function(socket) {
 	socket.on('postChat', function(data) {
 		console.log('postChat');
 		console.log(data.text);
+		var Channel = mongoose.model('Channel');
+		var msg = new Channel({
+			name: 'first',
+		});
+		msg.messages.push({user:'Pat', content: 'First message ever.', msgtype: 'txt'});
+		msg.save(function(err) {
+			if(!err) console.log('Success!!');
+		});
 		socket.broadcast.emit('onPostChat', data);
 	});
+	
+	
 	
 	/*
 	Add to mongodb here?

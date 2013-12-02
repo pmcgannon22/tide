@@ -20,3 +20,5 @@ var ChannelSchema = new Schema({
 	messages: [MessageSchema]
 });
 
+
+mongoose.model('Channel', ChannelSchema);
