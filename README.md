@@ -8,7 +8,7 @@ tide
 
 - Install **node.js**
 - Install **npm**, a node package manager. 
-- In main directory (where *package.json* resides), run *node install*.
+- In main directory (where *package.json* resides), run *npm install*.
 
 Now, all dependencies should be installed in a folder called *node_modules*. 
 
