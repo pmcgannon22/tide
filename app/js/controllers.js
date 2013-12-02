@@ -1,39 +1,6 @@
-var tide = angular.module('Tide', []);
+var tideControllers = angular.module('tideControllers',[]);
 
-tide.filter('capitalized', function() {
-	return function(input, scope) {
-		if(input != null){
-			console.log(input);
-			return input.substring(0,1).toUpperCase();
-		}
-	}
-});
-
-tide.factory('socket', function($rootScope){
-	var socket = io.connect();
-	return {
-		on: function(eventName, callback) {
-			socket.on(eventName, function() {
-				var args = arguments;
-				$rootScope.$apply(function() {
-					callback.apply(socket, args);
-				});
-			});
-		},
-		emit: function(eventName, data, callback) {
-			socket.emit(eventName, data, function() {
-				var args = arguments;
-				$rootScope.$apply(function() {
-					if(callback) {
-						callback.apply(socket, args);
-					}
-				});
-			});
-		}
-	};
-});
-
-tide.controller('ChatCtrl', function($scope, socket) {
+tideControllers.controller('ChatCtrl', function($scope, socket) {
 	$scope.selected = null;
 	/*
 	$scope.messages = [
