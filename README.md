@@ -2,7 +2,7 @@ tide
 ====
 
 
-#### Google Wave's little, tiny brother. 
+#### Google Wave's little, tiny brother. It should probably be called ripple. 
 
 ##### Set up
 
