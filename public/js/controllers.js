@@ -25,12 +25,10 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			var currentTime = d.toLocaleTimeString();
 			currentTime = currentTime.substr(0, 5);
 			var newChat = {
-				text: $scope.chatbox,
+				content: $scope.chatbox,
 				user: $scope.username,
 				channel: $scope.currentChannel,
-				time: currentTime
 			};
-			$scope.chats.push(newChat);
 			$scope.chatbox = "";
 			socket.emit('postChat', newChat);
 		};

@@ -19,8 +19,8 @@
             <div class="message-content-body">
                 <p ng-repeat="chat in chats" ng-class-odd="'left'" ng-class-even="'right'" class="message-bubble triangle-border">
                 	<span class="helvetica chaticon">{{ chat.user | capitalized }}</span>
-                    {{ chat.text }}
-                    <span class="helvetica message-timestamp">{{ chat.time }}</span>
+                    {{ chat.content }}
+                    <span class="helvetica message-timestamp">{{ chat.createdAt | formatDate }}</span>
                 </p>
                 <div class="clearfix">
                 <form class="pure-form" ng-submit="onPostChat()">

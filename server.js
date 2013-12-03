@@ -30,6 +30,7 @@ fs.readdirSync(models_path).forEach(function(file) {
 db.on('error', console.error.bind(console, 'connection error:'));
 
 var channels = require('./app/controllers/channel');
+
 //Routes
 app.get('/data/:channel', channels.messages);
 
@@ -51,22 +52,34 @@ io.sockets.on('connection', function(socket) {
 		//Adds the message to the current channel. 
 		//If the channel doesn't exist, it will create it. 
 		
-		Channel.update({ name: data.channel.toLowerCase() },
-			{ 
+		Channel.findOneAndUpdate({ name: data.channel.toLowerCase() },
+			{
 				$push: { 
 					messages:{
 						user: data.user,
-						content: data.text,
+						content: data.content,
 						msgtype: 'txt'
 					} 
-				} 
+				},
+			},
+			{ new: true, upsert: true, select: 'messages' },
+			function(err, doc) {
+				if(!err) {
+					socket.emit('onPostChat', doc.messages[doc.messages.length-1]);
+				}
+			}
+		);
+		/*
+		Channel.update({ name: data.channel.toLowerCase() },
+			{ 
+				
 			},
 			{ upsert: true },
 			function(err, numberAffected, raw) {
 				console.log(raw);
 			}
-		);
-		socket.broadcast.emit('onPostChat', data);
+		);*/
+		//socket.emit('onPostChat', data);
 	});	
 	/*
 	Add to mongodb here?

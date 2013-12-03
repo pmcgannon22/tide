@@ -8,3 +8,12 @@ tideFilters.filter('capitalized', function() {
 		}
 	}
 });
+
+tideFilters.filter('formatDate', function() {
+	return function(input, scope) {
+		if(input != null) {
+			var d = new Date(input);
+			return d.getHours() + ":" + d.getMinutes();
+		}
+	}
+});
