@@ -3,7 +3,6 @@ var express = require('express'),
 	fs = require('fs'),
 	server = require('http').createServer(app),
 	io = require('socket.io').listen(server);
-
 // Modulus.io for database host...?
 
 var env = 'dev',
@@ -30,32 +29,45 @@ fs.readdirSync(models_path).forEach(function(file) {
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
-
+var channels = require('./app/controllers/channel');
+//Routes
+app.get('/data/:channel', channels.messages);
 
 app.configure(function() {
-        app.use(express.static(__dirname + '/public/'));
+		app.use(app.router);
         app.use(express.logger('dev')); //logs every request to the node console
         app.use(express.methodOverride()); // simulate DELETE and PUT
-    });
+        app.use(express.static(__dirname + '/public/'));
+});
+
     
+var Channel = mongoose.model('Channel');
 
 io.sockets.on('connection', function(socket) {
 	socket.on('postChat', function(data) {
 		console.log('postChat');
 		console.log(data.text);
-		var Channel = mongoose.model('Channel');
-		var msg = new Channel({
-			name: 'first',
-		});
-		msg.messages.push({user:'Pat', content: 'First message ever.', msgtype: 'txt'});
-		msg.save(function(err) {
-			if(!err) console.log('Success!!');
-		});
+		
+		//Adds the message to the current channel. 
+		//If the channel doesn't exist, it will create it. 
+		
+		Channel.update({ name: data.channel.toLowerCase() },
+			{ 
+				$push: { 
+					messages:{
+						user: data.user,
+						content: data.text,
+						msgtype: 'txt'
+					} 
+				} 
+			},
+			{ upsert: true },
+			function(err, numberAffected, raw) {
+				console.log(raw);
+			}
+		);
 		socket.broadcast.emit('onPostChat', data);
-	});
-	
-	
-	
+	});	
 	/*
 	Add to mongodb here?
 	*/
