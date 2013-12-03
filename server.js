@@ -65,7 +65,7 @@ io.sockets.on('connection', function(socket) {
 			{ new: true, upsert: true, select: 'messages' },
 			function(err, doc) {
 				if(!err) {
-					socket.emit('onPostChat', doc.messages[doc.messages.length-1]);
+					io.sockets.emit('onPostChat', doc.messages[doc.messages.length-1]);
 				}
 			}
 		);
