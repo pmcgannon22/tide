@@ -12,6 +12,7 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			});
 		}
 		
+        //delete?
 		$scope.filterChannel = function(chat) {
 			return chat.channel == $rootScope.currentChannel;
 		};
@@ -21,10 +22,7 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 		}
 		
 		$scope.onPostChat = function() {
-			var d = new Date();
-			var currentTime = d.toLocaleTimeString();
-			currentTime = currentTime.substr(0, 5);
-			var newChat = {
+            var newChat = {
 				content: $scope.chatbox,
 				user: $scope.username,
 				channel: $scope.currentChannel,
@@ -37,7 +35,7 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			$scope.chats.push(data);
 		});
 		
-		
+		//delete?
 		$scope.active = function(message) {
 			$scope.selected = message;
 		}

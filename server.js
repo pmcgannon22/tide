@@ -5,6 +5,7 @@ var express = require('express'),
 	io = require('socket.io').listen(server);
 // Modulus.io for database host...?
 
+//mongoose maps json to mongoDB
 var env = 'dev',
 	config = require('./config/config')[env],
 	mongoose = require('mongoose');
@@ -14,8 +15,6 @@ mongoose.connect(config.db);
 var db = mongoose.connection;
 var models_path = __dirname + '/app/models';
 
-console.log(models_path);
-console.log(config.db);
 
 db.on('open', function() {
 	console.log('Connected to database: ', config.db);
@@ -29,9 +28,10 @@ fs.readdirSync(models_path).forEach(function(file) {
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
+//loads channel controller
 var channels = require('./app/controllers/channel');
 
-//Routes
+//Routes - restful-ish
 app.get('/data/:channel', channels.messages);
 
 app.configure(function() {
@@ -41,7 +41,7 @@ app.configure(function() {
         app.use(express.static(__dirname + '/public/'));
 });
 
-    
+
 var Channel = mongoose.model('Channel');
 
 io.sockets.on('connection', function(socket) {
