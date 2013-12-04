@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example that shows off a responsive email layout.">
+
+<title>Tide</title>
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<style>
+/* Login Page */
+.middle form {
+	position: absolute;
+	width: 400px;
+	top: 40%;
+	left: 40%;
+}
+
+.middle form .pure-input-1-2 {
+	width: 100%;
+}
+
+</style>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+</head>
+<body>
+
+
+<div class="pure-g-r">
+	<div class="pure-u-1-3">
+	</div>
+	
+	<div class="pure-u-1-3 middle">
+		<img src="/img/tide-logo.png" />
+		<form class="pure-form" action="/register" method="get">
+			<fieldset class="pure-group">
+				<input type="text" name="username" class="pure-input-1-2" placeholder="Username required...">
+				<input type="text" name="channel" class="pure-input-1-2" placeholder="Enter a start channel...">
+			</fieldset>
+			
+			<button type="submit" class="pure-button pure-input-1-2 pure-button-primary">Sign in</button>
+		</form>
+	</div>
+	
+	<div class="pure-u-1-3">
+	</div>
+</div>
+
+
+
+</body>
+</html>

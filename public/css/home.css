@@ -1,3 +1,4 @@
+
 body {
     color: #333;
 }
@@ -103,7 +104,10 @@ a {
     }
     .message-name {
         text-transform: uppercase;
-        color: #999;
+        margin-bottom: 5px;
+    }
+    .message-subject {
+	    color: #999;
     }
     .message-desc {
         font-size: 80%;
@@ -119,7 +123,7 @@ a {
 
 /* Email Content Styles */
 .message-content-header, .message-content-body, .message-content-footer {
-    padding: 1em 2em;
+    padding: .35em 2em;
 }
     .message-content-header {
         border-bottom: 1px solid #ddd;
@@ -143,6 +147,22 @@ a {
         .message-content-controls .secondary-button {
             margin-bottom: 0.3em;
         }
+        
+    .message-content-body {
+	    max-height: 500px;
+	    overflow: auto;
+	    border-bottom: 1px solid rgb(221,221,221);
+    }
+    
+    #no-messages-warning {
+	    color: #9f9f9f;
+    }
+        
+    .icon-center {
+	    text-align: center;
+	    width: 100%;
+    }
+    
 
 
 @media (max-width: 867px) {
@@ -203,8 +223,22 @@ a {
     }
 }
 
+#channel-header {
+	text-align: center;
+	padding: .1em .5em;
+}
+
+.new-channel input[type=text] {
+	width: 90%;
+	padding: .3em .1em;
+}
+
 .chatbox {
 	width: 400px;
+}
+
+form.chat {
+	margin: 20px 0 0 60px;
 }
 
 
