@@ -29,13 +29,18 @@
 
 
 <div class="pure-g-r content" id="layout">
-    <div class="pure-u" id="nav">
+    <div class="pure-u" id="nav" ng-controller="ActiveUserCtrl">
         <a href="/"><img src="img/tide-logo.png" style="margin-left: -15px;"/></a>
 
         <div class="nav-inner">
             
 
             <div class="pure-menu pure-menu-open">
+            	<ul>
+            		<li class="active-user" ng-repeat="user in activeChannelUsers">
+            			{{ user }}
+            		</li>
+            	</ul>
             </div>
         </div>
     </div>

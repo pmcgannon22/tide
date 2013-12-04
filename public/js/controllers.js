@@ -3,13 +3,18 @@ var tideControllers = angular.module('tideControllers',[]);
 tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$http', 'socket', 
 	
 	function($scope, $rootScope, $routeParams, $http, socket) {
+		if($rootScope.currentChannel) 
+			socket.emit('leave-channel', {channel: $rootScope.currentChannel, username: $rootScope.currentUser});
 		$rootScope.currentChannel = $routeParams.channelName;
 		$scope.chats = [];
 		
 		if($rootScope.currentChannel) {
 			//socket.emit('unsubscribeAll', {});
 			//Tell server that I am interested in the messages from this channel.
-			socket.emit('subscribe', $rootScope.currentChannel);	
+			socket.emit('subscribe', $rootScope.currentChannel);
+			socket.emit('enter-channel', 
+				{channel: $rootScope.currentChannel, username: $rootScope.currentUser}
+			);	
 			
 			//Get the channel's chat history from the server
 			$http.get('data/' + $rootScope.currentChannel).success(function(data) {
@@ -83,9 +88,6 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 			$location.path("/channel/" + channel);
 		}
 		
-		//$scope.unreadMessageText = function
-		
-		
 		socket.on('onPostChat', function(data) {
 			if(data.channel != $rootScope.currentChannel) {
 				for(var i=0; i < $scope.channels.length; i++) {
@@ -97,6 +99,12 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 			}
 		});
 		
+		socket.on('disconnect', function() {
+			socket.emit('leave-channel', {channel: $rootScope.currentChannel, username: $rootScope.currentUser});
+		});
+		
+
+		
 		
 		// Get session data at initialization. 
 		if(!$rootScope.currentUser) {
@@ -106,5 +114,14 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 				$scope.setNewChannel(data.channel);
 			})
 		}
-		
 }]);
+
+tideControllers.controller('ActiveUserCtrl', ['$scope', '$rootScope', 'socket',
+	function($scope, $rootScope, socket) {
+		$scope.activeChannelUsers = [];
+	
+		socket.on('activeUserList', function(data) {
+			$scope.activeChannelUsers = data;	
+		});
+	}]
+);

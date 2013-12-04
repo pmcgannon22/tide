@@ -68,6 +68,7 @@ app.get('/session-data/', function(req, res) {
 
 
 var Channel = mongoose.model('Channel');
+var active_users = {};
 
 io.sockets.on('connection', function(socket) {
 	socket.on('postChat', function(data) {		
@@ -101,6 +102,23 @@ io.sockets.on('connection', function(socket) {
 	socket.on('unsubscribe', function(room) {
 		console.log('leaving room', room);
 		socket.leave(room);
+	});
+	
+	socket.on('enter-channel', function(data) {
+		if(active_users[data.channel]) {
+			active_users[data.channel].push(data.username);
+		} else {
+			active_users[data.channel] = [data.username];
+		}
+		io.sockets.in(data.channel).emit('newActiveUser', {channel: data.channel, username: data.username});
+		socket.emit('activeUserList', active_users[data.channel]);
+	})
+	
+	socket.on('leave-channel', function(data) {
+		if(active_users[data.channel]) {
+			var index = active_users[data.channel].indexOf(data.username);
+			if(index > 0) array.splice(index, 1);
+		}
 	});
 	
 });
