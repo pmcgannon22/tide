@@ -23,15 +23,12 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			});
 		}
 		
-        //delete?
-		$scope.filterChannel = function(chat) {
-			return chat.channel == $rootScope.currentChannel;
-		};
-		
+		//Don't allow chat submission if no message entered. 
 		$scope.submitDisabled = function() {
 			return ($scope.chatbox == "" || $scope.chatbox == undefined);
 		}
 		
+		//Send chat to server. 
 		$scope.onPostChat = function() {
             var newChat = {
 				content: $scope.chatbox,
@@ -42,6 +39,7 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			socket.emit('postChat', newChat);
 		};
 		
+		//Handles a received chat from the server. 
 		socket.on('onPostChat', function(data){
 			if(data.channel == $rootScope.currentChannel) {
 				$scope.chats.push(data.message);
@@ -106,10 +104,9 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 
 		
 		
-		// Get session data at initialization. 
+		// Initialize username and current channel with the session data of the server. 
 		if(!$rootScope.currentUser) {
 			$http.get('/session-data/').success(function(data) {
-				console.log(data);
 				$rootScope.currentUser = data.username;
 				$scope.setNewChannel(data.channel);
 			})
@@ -118,10 +115,25 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 
 tideControllers.controller('ActiveUserCtrl', ['$scope', '$rootScope', 'socket',
 	function($scope, $rootScope, socket) {
+	
 		$scope.activeChannelUsers = [];
 	
 		socket.on('activeUserList', function(data) {
 			$scope.activeChannelUsers = data;	
+		});
+		
+		socket.on('newActiveUser', function(data) {
+			if(data.channel == $rootScope.currentChannel) {
+				$scope.activeChannelUsers.push(data.username);
+			}
+		});
+		
+		socket.on('activeUserLeft', function(data) {
+			if(data.channel == $rootScope.currentChannel) {
+				var index = $scope.activeChannelUsers.indexOf(data.username);
+				if(index >= 0)
+					$scope.activeChannelUsers.splice(index, 1);
+			}
 		});
 	}]
 );

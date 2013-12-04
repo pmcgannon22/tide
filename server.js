@@ -106,7 +106,8 @@ io.sockets.on('connection', function(socket) {
 	
 	socket.on('enter-channel', function(data) {
 		if(active_users[data.channel]) {
-			active_users[data.channel].push(data.username);
+			if(active_users[data.channel].indexOf(data.username) < 0)
+				active_users[data.channel].push(data.username);
 		} else {
 			active_users[data.channel] = [data.username];
 		}
@@ -117,7 +118,8 @@ io.sockets.on('connection', function(socket) {
 	socket.on('leave-channel', function(data) {
 		if(active_users[data.channel]) {
 			var index = active_users[data.channel].indexOf(data.username);
-			if(index > 0) array.splice(index, 1);
+			if(index >= 0) active_users[data.channel].splice(index, 1);
+			io.sockets.in(data.channel).emit('activeUserLeft',{channel: data.channel, username: data.username});
 		}
 	});
 	

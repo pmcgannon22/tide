@@ -82,6 +82,10 @@ a {
     #nav .nav-menu-button {
         display: none;
     }
+    
+    #nav .active-user {
+	    color: white;
+    }
 
     .message-count {
         color: rgb(75, 113, 151);
