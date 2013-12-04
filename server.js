@@ -35,7 +35,7 @@ app.configure(function() {
 		app.use(app.router);
         app.use(express.logger('dev')); //logs every request to the node console
         app.use(express.methodOverride()); // simulate DELETE and PUT
-        app.use(cookieParser());
+        app.use(express.cookieParser());
         app.use(express.session({ secret: 'asdfghjkl' }));
         app.use(express.static(__dirname + '/public/'));
 });
