@@ -31,24 +31,30 @@ db.on('error', console.error.bind(console, 'connection error:'));
 //loads channel controller
 var channels = require('./app/controllers/channel');
 
-//Routes - restful-ish
-app.get('/data/:channel', channels.messages);
-
 app.configure(function() {
 		app.use(app.router);
         app.use(express.logger('dev')); //logs every request to the node console
         app.use(express.methodOverride()); // simulate DELETE and PUT
+        app.use(cookieParser());
+        app.use(express.session({ secret: 'asdfghjkl' }));
         app.use(express.static(__dirname + '/public/'));
 });
+
+
+//Routes - restful-ish
+app.get('/data/:channel', channels.messages);
+
+
+
+/*
+* Handle SocketIO stuff and saving the data received to Mongo.
+*/
 
 
 var Channel = mongoose.model('Channel');
 
 io.sockets.on('connection', function(socket) {
-	socket.on('postChat', function(data) {
-		console.log('postChat');
-		console.log(data.text);
-		
+	socket.on('postChat', function(data) {		
 		//Adds the message to the current channel. 
 		//If the channel doesn't exist, it will create it. 
 		
@@ -62,14 +68,25 @@ io.sockets.on('connection', function(socket) {
 					} 
 				},
 			},
-			{ new: true, upsert: true, select: 'messages' },
+			{ new: true, upsert: true },
 			function(err, doc) {
 				if(!err) {
-					io.sockets.emit('onPostChat', doc.messages[doc.messages.length-1]);
+					io.sockets.in(doc.name).emit('onPostChat', { message: doc.messages[doc.messages.length-1], channel: doc.name });
 				}
 			}
 		);
+	});
+	
+	socket.on('subscribe', function(room) {
+		console.log('joining room', room);
+		socket.join(room);
 	});	
+		
+	socket.on('unsubscribe', function(room) {
+		console.log('leaving room', room);
+		socket.leave(room);
+	});
+	
 });
 
 

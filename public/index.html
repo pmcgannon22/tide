@@ -30,7 +30,7 @@
 
 <div class="pure-g-r content" id="layout">
     <div class="pure-u" id="nav">
-        <img src="img/tide-logo.png" style="margin-left: -15px;"/>
+        <a href="/"><img src="img/tide-logo.png" style="margin-left: -15px;"/></a>
 
         <div class="nav-inner">
             
@@ -49,6 +49,7 @@
     			<i class="fa fa-3 icon-center" 
     				ng-class="{'fa-minus' : showNewChannelForm,  'fa-plus' : !showNewChannelForm }"
     				ng-click="newChannel = ''"></i>
+    				
     	</div>
     	
 		<div class="message-item new-channel" ng-hide="!showNewChannelForm">
@@ -56,12 +57,17 @@
     			<input type="text" ng-model="newChannel" placeholder="Name your new channel.">
     			<input type="submit" style="position: absolute; left: -9999px;" />
     		</form>
+    		
     	</div>
     	
     
-    	<div class="message-item" ng-repeat="channel in channels | unique: 'name' " ng-click="activate(channel.name)" ng-class="{'message-selected': currentChannel == channel.name}">
+    	<div class="message-item" ng-repeat="channel in channels | unique: 'name' " ng-click="activate(channel)" ng-class="{'message-selected': currentChannel == channel.name}">
     		<div class="pure-u">
-                <h4 class="message-name">{{ channel.name }}</h4>
+                <h4 class="message-name">
+                	{{ channel.name }}
+                	<span ng-show="channel.unread > 0"> {{ "- (" + channel.unread +")" }} </span>
+                </h4>
+                
                 <h5 class="message-subject">{{ channel.lastMessage.user }}</h5>
                 <p class="message-desc">
                     {{ (channel.lastMessage.content | truncate:50) || "No messages." }}
