@@ -69,21 +69,7 @@ io.sockets.on('connection', function(socket) {
 				}
 			}
 		);
-		/*
-		Channel.update({ name: data.channel.toLowerCase() },
-			{ 
-				
-			},
-			{ upsert: true },
-			function(err, numberAffected, raw) {
-				console.log(raw);
-			}
-		);*/
-		//socket.emit('onPostChat', data);
 	});	
-	/*
-	Add to mongodb here?
-	*/
 });
 
 
