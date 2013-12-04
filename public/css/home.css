@@ -1,3 +1,4 @@
+
 body {
     color: #333;
 }
@@ -122,7 +123,7 @@ a {
 
 /* Email Content Styles */
 .message-content-header, .message-content-body, .message-content-footer {
-    padding: 1em 2em;
+    padding: .35em 2em;
 }
     .message-content-header {
         border-bottom: 1px solid #ddd;

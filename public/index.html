@@ -68,7 +68,7 @@
                 	<span ng-show="channel.unread > 0"> {{ "- (" + channel.unread +")" }} </span>
                 </h4>
                 
-                <h5 class="message-subject">{{ channel.lastMessage.user }}</h5>
+                <h5 class="message-subject">{{ channel.lastMessage.user + " - " + (channel.lastMessage.createdAt | formatIsoTime) }}</h5>
                 <p class="message-desc">
                     {{ (channel.lastMessage.content | truncate:50) || "No messages." }}
                 </p>

@@ -32,18 +32,34 @@ db.on('error', console.error.bind(console, 'connection error:'));
 var channels = require('./app/controllers/channel');
 
 app.configure(function() {
-		app.use(app.router);
         app.use(express.logger('dev')); //logs every request to the node console
         app.use(express.methodOverride()); // simulate DELETE and PUT
         app.use(express.cookieParser());
-        app.use(express.session({ secret: 'asdfghjkl' }));
+        app.use(express.session({ secret: "This is a secret" }));
+        app.use(app.router);
+        app.use(function(req, res, next) {
+			if(!req.session.username && req.path != '/login.html') {
+				return res.redirect('/login.html');
+			}
+			next(); 
+		});
+        //Custom middleware to make sure the current session has a username attached to it. 
         app.use(express.static(__dirname + '/public/'));
 });
 
 
+
 //Routes - restful-ish
 app.get('/data/:channel', channels.messages);
-
+app.get('/register', function(req, res) {
+	req.session.username = req.query.username;
+	req.session.channel = req.query.channel;
+	console.log(req.session);
+	res.redirect('/');
+});
+app.get('/session-data/', function(req, res) {
+	res.json(req.session);
+});
 
 
 /*

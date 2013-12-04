@@ -24,13 +24,13 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 		};
 		
 		$scope.submitDisabled = function() {
-			return ($scope.chatbox == "" || $scope.chatbox == undefined  || $scope.username == "" || $scope.username == undefined);
+			return ($scope.chatbox == "" || $scope.chatbox == undefined);
 		}
 		
 		$scope.onPostChat = function() {
             var newChat = {
 				content: $scope.chatbox,
-				user: $scope.username,
+				user: $rootScope.currentUser,
 				channel: $scope.currentChannel,
 			};
 			$scope.chatbox = "";
@@ -77,7 +77,6 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 					};
 				}
 				
-				
 				//TODO: Just don't put in here if it is a duplicate. Or replace to get updated data.
 				$scope.channels.push(newChannel);
 			});
@@ -97,4 +96,15 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 				}
 			}
 		});
+		
+		
+		// Get session data at initialization. 
+		if(!$rootScope.currentUser) {
+			$http.get('/session-data/').success(function(data) {
+				console.log(data);
+				$rootScope.currentUser = data.username;
+				$scope.setNewChannel(data.channel);
+			})
+		}
+		
 }]);
