@@ -1,5 +1,5 @@
 <div class="pure-u-1" id="main">
-        <div class="message-content">
+        <div class="message-content" xng-scroll>
             <div class="message-content-header pure-g">
                 <div class="pure-u-1-2">
                     <h1 class="message-content-title">{{ currentChannel || "No channel has been set. "}}</h1>
@@ -16,8 +16,8 @@
 
             <div id="chatarea" class="message-content-body">
             	<h4 ng-show="chats.length == 0" id="no-messages-warning">There's no messages here :(. Be a leader and send one!</h4>
-                <p ng-repeat="chat in chats" ng-class-odd="'left'" ng-class-even="'right'" class="message-bubble triangle-border">
-                	<span class="helvetica chaticon">{{ chat.user | capitalized }}</span>
+                <p ng-repeat="chat in chats" ng-class="{'left':chat.user.toUpperCase() != currentUser.toUpperCase(), 'right':chat.user.toUpperCase() == currentUser.toUpperCase()} " class="message-bubble triangle-border">
+                	<span class="helvetica chaticon">{{ chat.user | capitalized}}</span>
                     {{ chat.content }}
                     <span class="helvetica message-timestamp">{{ chat.createdAt | formatIsoTime }}</span>
                 </p>

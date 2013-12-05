@@ -1,7 +1,8 @@
 var tide = angular.module('Tide', [
 	'tideControllers',
 	'tideFilters',
-	'tideServices'
+	'tideServices',
+	'tideDirectives',
 ]);
 
 tide.config(['$routeProvider',

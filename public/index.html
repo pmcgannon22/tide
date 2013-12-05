@@ -19,6 +19,7 @@
 <script src="js/controllers.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/services.js"></script>
+<script src="js/directives.js"></script>
 
 </head>
 <body>
@@ -33,7 +34,8 @@
         <a href="/"><img src="img/tide-logo.png" style="margin-left: -15px;"/></a>
 
         <div class="nav-inner">
-            <div class="pure-menu pure-menu-open">
+            <div class="pure-menu pure-menu-open" id="active-user-list">
+            	<h5>Users in: {{ currentChannel }}</h5>
             	<ul>
             		<li class="active-user" ng-repeat="user in activeChannelUsers">
             			{{ user }}
@@ -52,7 +54,6 @@
     			<i class="fa fa-3 icon-center" 
     				ng-class="{'fa-minus' : showNewChannelForm,  'fa-plus' : !showNewChannelForm }"
     				ng-click="newChannel = ''"></i>
-    				
     	</div>
     	
 		<div class="message-item new-channel" ng-hide="!showNewChannelForm">
