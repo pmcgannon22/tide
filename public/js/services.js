@@ -1,7 +1,7 @@
 var tideServices = angular.module('tideServices',[]);
 
 tideServices.factory('socket', function($rootScope){
-	var socket = io.connect('tide.ngrok.com', {
+	var socket = io.connect(, {
 		'sync disconnect on unload' : true
 	});
 	return {
