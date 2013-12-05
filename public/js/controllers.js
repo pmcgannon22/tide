@@ -70,6 +70,13 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			}
 			console.log(file);
 			reader.onloadend = function() {
+				var mime = /data:(.+);/.exec(reader.result)[1];
+				if(mime != 'image/gif' || mime != 'image/png' 
+					|| mime != 'image/jpeg' || mime != 'image/bmp') {
+					alert("Not a supported filetype!");
+					return;
+				}
+				
 				socket.emit('postChat', {
 					content: reader.result,
 					user: $rootScope.currentUser,
@@ -106,6 +113,7 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 			socket.emit('subscribe', channel);
 			$scope.newChannel = "";
 			$scope.showNewChannelForm = false;
+			$rootScope.currentChannel = channel;
 			$http.get('data/' + channel).success(function(data) {
 				var newChannel = { 
 					name: channel, 
@@ -147,7 +155,7 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 				for(var i=0; i < $scope.channels.length; i++) {
 					if(data.channel == $scope.channels[i].name) {
 						$scope.channels[i].unread += 1;
-						$scope.channels[i].lastMessage = data.message
+						$scope.channels[i].lastMessage = data.message;
 					}
 				}
 			}
