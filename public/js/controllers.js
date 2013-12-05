@@ -42,6 +42,7 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 				content: $scope.chatbox,
 				user: $rootScope.currentUser,
 				channel: $scope.currentChannel,
+				msgtype: 'txt'
 			};
 			$scope.chatbox = "";
 			socket.emit('postChat', newChat);
@@ -53,6 +54,31 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 				$scope.chats.push(data.message);
 			}
 		});
+		
+		
+		/*
+		Image message handling
+		*/
+		
+		$scope.sendImage = function(elem) {
+			if(elem.files.length == 0) return;
+			var file = elem.files[0],
+				reader = new FileReader();
+			if(file.size > 2000000) {
+				alert("Image is too big! Please keep it under 2 MB.");
+				return;
+			}
+			console.log(file);
+			reader.onloadend = function() {
+				socket.emit('postChat', {
+					content: reader.result,
+					user: $rootScope.currentUser,
+					channel: $scope.currentChannel,
+					msgtype: 'img'
+				});
+			};
+			reader.readAsDataURL(file);
+		};
 	}
 ]);
 

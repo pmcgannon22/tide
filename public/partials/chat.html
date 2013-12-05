@@ -16,16 +16,33 @@
 
             <div id="chatarea" class="message-content-body">
             	<h4 ng-show="chats.length == 0" id="no-messages-warning">There's no messages here :(. Be a leader and send one!</h4>
-                <p ng-repeat="chat in chats" ng-class="{'left':chat.user.toUpperCase() != currentUser.toUpperCase(), 'right':chat.user.toUpperCase() == currentUser.toUpperCase()} " class="message-bubble triangle-border">
+                <p ng-repeat="chat in chats" 
+                	ng-class="{'left':chat.user.toUpperCase() != currentUser.toUpperCase(), 'right':chat.user.toUpperCase() == currentUser.toUpperCase()}"
+                	ng-switch on="chat.msgtype" 
+                	class="message-bubble triangle-border">
                 	<span class="helvetica chaticon">{{ chat.user | capitalized}}</span>
-                    {{ chat.content }}
+                    <span ng-switch-when="txt">{{ chat.content }}</span>
+                    <span ng-switch-when="img"><img ng-src="{{ chat.content }}"></span>
                     <span class="helvetica message-timestamp">{{ chat.createdAt | formatIsoTime }}</span>
                 </p>
                 <div class="clearfix">
             </div>
         </div>
         <form class="pure-form chat" ng-submit="onPostChat()">
-                	<textarea rows="3" placeholder="Enter message here..." ng-model="chatbox" class="pure-form-aligned chatbox"></textarea>
-                	<button type="submit" class="pure-button" ng-disabled="submitDisabled()">Send</button>
-            </form>
+        	<i class="fa fa-camera fa-3x image-upload-link" xng-uploader></i>
+        	<fieldset class="pure-group">
+                	<textarea rows="5" placeholder="Enter message here..." ng-model="chatbox" class="pure-input-1-2 chatbox"></textarea>
+        	</fieldset>
+        	<input type="file" id="image-upload" onchange="angular.element(this).scope().sendImage(this)" style="display:none" />
+        	<button type="submit" class="pure-button pure-input-1-2 pure-button-primary" ng-disabled="submitDisabled()">Send</button>
+        </form>
+        <!--
+        <form class="pure-form" action="/register" method="get">
+			<fieldset class="pure-group">
+				<input type="text" name="username" class="pure-input-1-2" placeholder="Username required...">
+				<input type="text" name="channel" class="pure-input-1-2" placeholder="Enter a start channel...">
+			</fieldset>
+			
+			<button type="submit" class="pure-button pure-input-1-2 pure-button-primary">Sign in</button>
+		</form>-->
     </div>

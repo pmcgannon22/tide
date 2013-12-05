@@ -6,6 +6,7 @@
    "dependencies": {
      "express": "3.x",
      "socket.io": "0.9.x",
-     "mongoose" : "~3.6.2"
+     "mongoose" : "~3.6.2",
+     "aws-sdk" : "~1.13.x"
    }
 } 

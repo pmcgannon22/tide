@@ -66,33 +66,57 @@ app.get('/session-data/', function(req, res) {
 /*
 * Handle SocketIO stuff and saving the data received to Mongo.
 */
-
+var s3 = require('./app/controllers/aws');
 var Channel = mongoose.model('Channel');
 var active_users = {};
 
 io.sockets.on('connection', function(socket) {
 	socket.on('postChat', function(data) {		
 		//Adds the message to the current channel. 
-		//If the channel doesn't exist, it will create it. 
+		//If the channel doesn't exist, it will create it.
 		
+		if(data.msgtype == 'img') {
+			data = handleImage(data);
+		}
 		Channel.findOneAndUpdate({ name: data.channel.toLowerCase() },
 			{
 				$push: { 
 					messages:{
 						user: data.user,
 						content: data.content,
-						msgtype: 'txt'
+						msgtype: data.msgtype
 					} 
 				},
 			},
 			{ new: true, upsert: true },
 			function(err, doc) {
+				console.log(doc);
 				if(!err) {
 					io.sockets.in(doc.name).emit('onPostChat', { message: doc.messages[doc.messages.length-1], channel: doc.name });
 				}
 			}
 		);
 	});
+	
+	/*
+	Handles upload the image to S3 and returning the necessary metadata in the correct form. 
+	*/
+	var handleImage = function(data) {
+		var mime = /data:(.+);/.exec(data.content)[1];
+		var datatype = mime.split("/")[1];
+		var buf = new Buffer(data.content.replace(/^data:image\/\w+;base64,/, ""),'base64');
+		var headers = {
+			mime:mime,
+			extension:datatype
+		};
+		var imageUrl = "https://s3.amazonaws.com/tide.ngrok/" + s3.upload(buf, headers);
+		return {
+			user: data.user,
+			channel: data.channel,
+			content: imageUrl,
+			msgtype: 'img'
+		};
+	}
 	
 	socket.on('subscribe', function(room) {
 		console.log('joining room', room);
