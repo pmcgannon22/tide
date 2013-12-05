@@ -124,6 +124,11 @@ a {
 	    right: 10px;
 	    top: 45%;
     }
+    .remove-channel em {
+	    font-size: .8em;
+	    position: relative;
+	    bottom: 2px;
+    }
 
 .message-selected {
     background: #eee;

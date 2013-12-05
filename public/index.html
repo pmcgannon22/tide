@@ -76,7 +76,13 @@
                     {{ (channel.lastMessage.content | truncate:50) || "No messages." }}
                 </p>
                 
-                <i class="fa fa-1 fa-minus remove-channel" ng-click="removeChannel(channel.name)"></i>
+                <span ng-init="deleteHover = false" class="remove-channel">
+                <em ng-show="deleteHover">delete</em>
+                <i class="fa fa-1 fa-minus" 
+                	ng-mouseenter="deleteHover = true"
+                	ng-mouseleave="deleteHover = false"
+                	ng-click="removeChannel(channel.name)"></i>
+                </span>
             </div>
     	</div>
         
