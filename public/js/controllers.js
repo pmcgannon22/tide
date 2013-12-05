@@ -71,12 +71,6 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 			console.log(file);
 			reader.onloadend = function() {
 				var mime = /data:(.+);/.exec(reader.result)[1];
-				if(mime != 'image/gif' || mime != 'image/png' 
-					|| mime != 'image/jpeg' || mime != 'image/bmp') {
-					alert("Not a supported filetype!");
-					return;
-				}
-				
 				socket.emit('postChat', {
 					content: reader.result,
 					user: $rootScope.currentUser,
