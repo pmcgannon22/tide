@@ -8,7 +8,7 @@ exports.messages = function(req, res) {
 		if(!err) {
 			res.json(data);
 		} else {
-			console.log("There was an error.");
+			console.log("There was an error attempting to retrieve messages from the server.");
 		}
 	});
 };

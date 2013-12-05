@@ -76,7 +76,7 @@
                     {{ (channel.lastMessage.content | truncate:50) || "No messages." }}
                 </p>
                 
-                <i class="fa fa-1 fa-minus remove-channel"></i>
+                <i class="fa fa-1 fa-minus remove-channel" ng-click="removeChannel(channel.name)"></i>
             </div>
     	</div>
         

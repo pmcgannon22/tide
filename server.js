@@ -27,7 +27,6 @@ fs.readdirSync(models_path).forEach(function(file) {
 });
 
 
-
 db.on('error', console.error.bind(console, 'connection error:'));
 
 //loads channel controller
@@ -67,7 +66,6 @@ app.get('/session-data/', function(req, res) {
 /*
 * Handle SocketIO stuff and saving the data received to Mongo.
 */
-
 
 var Channel = mongoose.model('Channel');
 var active_users = {};

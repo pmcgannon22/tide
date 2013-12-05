@@ -1,5 +1,13 @@
 var tideControllers = angular.module('tideControllers',[]);
 
+
+/*
+ChatCtrl is the controller for the main chat area, where the current channel's messages go.
+It handles:
+	- pushing a message to the server after it has been sent. 
+	- pushing a message to the screen after the response from the server is received. 
+	- loading a channel, including retrieving its former messages. 
+*/
 tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$http', 'socket', 
 	
 	function($scope, $rootScope, $routeParams, $http, socket) {
@@ -48,7 +56,13 @@ tideControllers.controller('ChatCtrl', ['$scope','$rootScope','$routeParams', '$
 	}
 ]);
 
-
+/*
+ChannelListCtrl is the controller for the channel list sidebar. 
+It handles:
+	- click events for changing channel and telling the ChatCtrl controller to reload the channel.
+	- processing, updating, and notifying the user of the most recent message in the channel box. 
+	- adding/removing channels and loading the added channel. 
+*/
 tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location', '$http', 'socket', 
 	function($scope, $rootScope, $location, $http, socket) {
 		$scope.showNewChannelForm = false;
@@ -86,6 +100,22 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 			$location.path("/channel/" + channel);
 		}
 		
+		$scope.removeChannel = function(channel) {
+			if($rootScope.currentChannel == channel) {
+				alert("You are not allowed to delete the active channel.");
+				return;
+			}
+			if(confirm("Are you sure you want to remove '" + channel + "'?")) {
+				socket.emit('unsubscribe', channel);
+				for(var i = 0; i < $scope.channels.length; i++){
+					if($scope.channels[i].name == channel) {
+						$scope.channels.splice(i, 1);
+						break;
+					}
+				}
+			}
+		}
+		
 		socket.on('onPostChat', function(data) {
 			if(data.channel != $rootScope.currentChannel) {
 				for(var i=0; i < $scope.channels.length; i++) {
@@ -111,6 +141,13 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 		}
 }]);
 
+/*
+ActiveUserCtrl is the controller that handles the current channel's active user list. 
+It handles:
+	- notifying the server that the client has entered/left a channel.
+	- notifying the server that the client has disconnected from the server.
+	- processing the above notifications from other clients and updating the list accordingly. 
+*/
 tideControllers.controller('ActiveUserCtrl', ['$scope', '$rootScope', 'socket',
 	function($scope, $rootScope, socket) {
 	
