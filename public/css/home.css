@@ -97,6 +97,7 @@ a {
     border-bottom: 1px solid #ddd;
     border-left: 6px solid transparent;
     cursor: pointer;
+    position: relative;
 }
     .email-avatar {
         border-radius: 3px;
@@ -116,6 +117,12 @@ a {
     .message-desc {
         font-size: 80%;
         margin: 0.4em 0;
+    }
+    
+    .message-item .remove-channel {
+	    position: absolute;
+	    right: 10px;
+	    top: 45%;
     }
 
 .message-selected {
@@ -145,7 +152,7 @@ a {
                 color: #999;
             }
     .message-content-controls {
-        margin-top: 2em;
+        margin-top: .5em;
         text-align: right;
     }
         .message-content-controls .secondary-button {

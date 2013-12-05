@@ -98,11 +98,9 @@ tideControllers.controller('ChannelListCtrl',['$scope','$rootScope','$location',
 		});
 		
 		socket.on('disconnect', function() {
+			console.log('disconnect fired');
 			socket.emit('leave-channel', {channel: $rootScope.currentChannel, username: $rootScope.currentUser});
 		});
-		
-
-		
 		
 		// Initialize username and current channel with the session data of the server. 
 		if(!$rootScope.currentUser) {

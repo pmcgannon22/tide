@@ -2,7 +2,9 @@ var express = require('express'),
 	app = express(),
 	fs = require('fs'),
 	server = require('http').createServer(app),
-	io = require('socket.io').listen(server);
+	io = require('socket.io').listen(server, {
+		'sync disconnect on unload': true
+	});
 // Modulus.io for database host...?
 
 //mongoose maps json to mongoDB
@@ -104,7 +106,14 @@ io.sockets.on('connection', function(socket) {
 		socket.leave(room);
 	});
 	
+	/*
+	enter-channel, leave-channel, and the disconnect handling are used to handle the management of the ActiveUserList for each channel on the client side. 
+	They are different from unsubscribe and subscribe in the sense that they let the server know what is the currently displayed channel, while subscribe and unsubscribe
+	tell the server all of the channels in the list, regardless of if they are active or not. 
+	*/
 	socket.on('enter-channel', function(data) {
+		socket.set('currentChannel', data.channel, function() {});
+		socket.set('username', data.username, function() {});
 		if(active_users[data.channel]) {
 			if(active_users[data.channel].indexOf(data.username) < 0)
 				active_users[data.channel].push(data.username);
@@ -121,6 +130,16 @@ io.sockets.on('connection', function(socket) {
 			if(index >= 0) active_users[data.channel].splice(index, 1);
 			io.sockets.in(data.channel).emit('activeUserLeft',{channel: data.channel, username: data.username});
 		}
+	});
+	
+	//Handles when clients close window or navigate to another site.
+	socket.on('disconnect', function() {
+		socket.get('currentChannel', function(err, channel) {
+			socket.get('username', function(err, name) {
+				io.sockets.in(channel).emit('activeUserLeft', {channel: channel, username: name});
+				console.log(name + ' disconnected, leaving channel ' + channel);
+			});
+		});
 	});
 	
 });
