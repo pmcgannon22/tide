@@ -5,8 +5,10 @@ module.exports = function(config){
     files : [
 	'app/lib/angular/angular.js',
 	'app/lib/angular/angular-*.js',
-      'app/js/**/*.js',
-      'test/unit_tests/**/*.js'
+	'public/js/**/*.js',
+	'public/js/*.js',
+	'test/unit_tests/**/*.js',
+	'node_modules/socket.io',
     ],
 
     exclude : [
@@ -17,7 +19,7 @@ module.exports = function(config){
 
     autoWatch : true,
 
-    frameworks: ['jasmine'],
+      frameworks: ['jasmine'],
 
     browsers : ['Chrome'],
 
