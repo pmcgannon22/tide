@@ -2,7 +2,7 @@ tide
 ====
 
 
-#### Google Wave's little, tiny brother. It should probably be called ripple. 
+#### Tiny chat client for the web. 
 
 ##### Set up
 
